@@ -1,0 +1,43 @@
+[
+  {
+    "hari": "Senin",
+    "matkul": [{
+      "namaMatkul": "Struktur Data & Algortima",
+      "jamMatkul": "17:30 - 20:00"
+    }, {
+      "namaMatkul": "Corporate IS",
+      "jamMatkul": "20:20 - 22:00"
+    }]
+  },
+  {
+    "hari": "Selasa",
+    "matkul":[{
+      "namaMatkul": "Kalkulus II",
+      "jamMatkul": "17:30 - 20:00"
+    }]
+  },
+  {
+    "hari": "Rabu",
+    "matkul":[{
+      "namaMatkul": "Matematika Diskrit",
+      "jamMatkul": "17:30 - 20:00"
+    },{
+      "namaMatkul": "Bahasa Inggris",
+      "jamMatkul": "20:20 - 22:00"
+    }]
+  },
+  {
+  "hari": "Kamis",
+   "matkul":[{
+     "namaMatkul": "Pengantar Rekayasa Desain I",
+     "jamMatkul": "17:30 - 20:20"
+   }]
+  },
+  {
+    "hari": "Jumat",
+    "matkul":[{
+      "namaMatkul": "Fisika II",
+      "jamMatkul": "17:30 - 20:20"
+    }]
+  }
+]
