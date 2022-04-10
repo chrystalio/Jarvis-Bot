@@ -65,36 +65,7 @@ for (let i = 0; i < jadwalKuliah.length; i++) {
     }
 }
 
-function getJoke(){
-    axios.get('https://yomomma-api.herokuapp.com/jokes')
-    .then(function(response){
-        console.log(response.data.joke);
-      
-    })
-    .catch(function(error){
-        return error
-    })
-}
 
-
-function getData(){
- axios.get('https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json')
-    .then(function(response){
-        console.log("Tanggal: " + response.data.Infogempa.gempa.Tanggal);
-        console.log("Jam: " + response.data.Infogempa.gempa.Jam);
-        console.log("Kedalaman: " + response.data.Infogempa.gempa.Kedalaman);
-        console.log("Magnitude: " + response.data.Infogempa.gempa.Magnitude);
-        console.log("Lintang: " + response.data.Infogempa.gempa.Lintang);
-        console.log("Bujur: " + response.data.Infogempa.gempa.Bujur);
-        console.log("Wilayah: " + response.data.Infogempa.gempa.Wilayah);
-        console.log("Dirasakan: " + response.data.Infogempa.gempa.Dirasakan);
-        console.log("Potensi: " + response.data.Infogempa.gempa.Potensi);
-        console.log("Shakemap: " + response.data.Infogempa.gempa.Shakemap);
-    })
-    .catch(function(error){
-        console.log(error);
-    })
-}
 
 const client = new Discord.Client({
   intents:[
@@ -114,14 +85,8 @@ client.on("messageCreate", (message) =>{
     message.reply("Server is Up!")
   } else if (message.content == ".jadwal"){
     message.reply(`${jalanData()}`)
-  } else if (message.content == ".yomama"){
-    message.reply(`${getJoke()}`)
-  } else if (message.content == ".gempa"){
-    message.reply(`${getData()}`)
-  }
-  // } else if (message.content == "hari ini"){
-  //   message.reply(`Hari ini adalah hari ${hariIni} `)
-  // }
+  } 
 })
 
 client.login(TOKEN)
+
