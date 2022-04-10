@@ -1,0 +1,22 @@
+{
+  "name": "jarvis-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "node": "^16.14.2"
+  },
+  "dependencies": {
+    "axios": "^0.26.1",
+    "discord.js": "^13.6.0",
+    "jstz": "^2.1.1",
+    "moment": "^2.29.2",
+    "node-fetch": "^3.2.3"
+  }
+}
