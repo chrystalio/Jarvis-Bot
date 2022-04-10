@@ -1,70 +1,74 @@
-const Discord = require("discord.js")
+// const { Discord, MessageEmbed } = require('discord.js');
+const Discord = require('discord.js')
+const {MessageEmbed} = require('discord.js');
 const axios = require('axios').default;
 const m = require("moment")
 const TOKEN = process.env['token']
-
-m.locale('id')
-process.env.TZ = 'Asia/Jakarta';
+const jadwalKuliah = require("./data.json")
 
 const day = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-const hari = new Date().getDay();
-// let hariIni = m().format('dddd, Do MMMM YYYY');
 
-const jadwalKuliah = [
-  {
-    hari: "Senin",
-    matkul1: "Struktur Data & Algortima",
-    matkul2: "Corporate IS",
-    jam1: "17:30 - 20:00",
-    jam2: "20:20 - 22:00"
-  },
-  {
-    hari: "Selasa",
-    matkul1: "Matematika II",
-    jam1: "17:30 - 20:00",
-  },
-  {
-    hari: "Rabu",
-    matkul1: "Matematika Diskrit",
-    matkul2: "Bahasa Inggris",
-    jam1: "17:30 - 20:00",
-    jam2: "20:20 - 22:00"
-  },
-  {
-    hari: "Kamis",
-    matkul1: "Pengantar Rekayasa dan Desain I",
-    jam1: "17:30 - 19:10",
-  },
-  {
-    hari: "Jumat",
-    matkul1: "Fisika Dasar II",
-    jam1: "17:30 - 20:00",
-  },
-];
-
-// // Get today day name
-// var d = new Date();
-// var MunculHari = day[d.getDay()];
-// var hariIni = m().format('dddd, Do MMMM YYYY');
-// const hari = new Date().getDay();
+process.env.TZ = 'Asia/Jakarta';
 
 
 function jalanData(){
-let today = m().format('dddd, Do MMMM YYYY');
-for (let i = 0; i < jadwalKuliah.length; i++) {
-  if(jadwalKuliah[i].hari === day[hari]){
-    if(jadwalKuliah[i].matkul2){
-    return `Hari ini adalah hari ${today}` + `\nKuliah 1: ${jadwalKuliah[i].matkul1}, jam ${jadwalKuliah[i].jam1}` + `\nKuliah 2: ${jadwalKuliah[i].matkul2}, jam ${jadwalKuliah[i].jam2} WIB`;
-  } else {
-  return `Hari ini adalah hari ${today}` + `\nKuliah 1: ${jadwalKuliah[i].matkul1}, jam ${jadwalKuliah[i].jam1} WIB`;
-} 
-  } else if (i === jadwalKuliah.length - 1) {
-            
-            return `Hari ini adalah hari ${today}` + `\nTidak ada kelas hari ini, Selamat beristirahat!`;
-        }
-    }
+  let hariIni = m().locale('id').format('dddd');
+  let fullTanggal = m().locale('id').format('dddd, Do MMMM YYYY')
+  
+  const jadwalHariIni = jadwalKuliah.filter((jadwal) => jadwal.hari === hariIni)[0];
+
+    if(!jadwalHariIni) return `Hari ini adalah hari ${fullTanggal}` + `\nTidak ada kelas hari ini, Selamat beristirahat!`;
+
+  let matkulList = "";
+
+  jadwalHariIni.matkul.map((jadwal, i) => {
+    const {namaMatkul, jamMatkul} = jadwal;
+    matkulList += `Kuliah ${i+1} ${namaMatkul} Jam ${jamMatkul} \n`
+  })
+
+  return `Hari ini adalah hari ${fullTanggal} \n${matkulList}`
+
 }
 
+// const url = 'https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json'
+const urlJoke = 'https://yomomma-api.herokuapp.com/jokes'
+
+
+
+async function getData() {
+  const {data} = await axios.get('https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json');
+  const {Tanggal, Jam, Coordinates, Lintang, Bujur, Magnitude, Kedalaman, Wilayah, Potensi, Dirasakan, Shakemap } = data.Infogempa.gempa;
+
+  const exampleEmbed = new MessageEmbed()
+    .setColor('#69c169')
+    .setTitle('Data Gempa Terkini')
+    .setAuthor({ name: 'BADAN METEOROLOGI, KLIMATOLOGI, DAN GEOFISIKA', iconURL: 'https://www.bmkg.go.id/asset/img/logo/logo-bmkg.png', url: 'https://www.bmkg.go.id/gempabumi-dirasakan.html' })
+    .setDescription('Gempabumi Dirasakan :')
+    .addFields(
+		{ name: 'Tanggal', value: Tanggal, inline: true  },
+    { name: 'Jam', value: Jam, inline: true},
+    { name: 'Kedalaman', value: Kedalaman, inline: true },
+    { name: 'Magnitude', value: Magnitude, inline: true },
+    { name: 'Lintang', value: Lintang, inline: true},
+    { name: 'Bujur', value: Bujur, inline: true },
+    { name: 'Wilayah', value: Wilayah, inline: true },
+    { name: 'Potensi', value: Potensi, inline: true },
+    { name: 'Dirasakan', value: Dirasakan, inline: true }
+	)
+	.setImage(`https://data.bmkg.go.id/DataMKG/TEWS/${Shakemap}`)
+	.setTimestamp();
+
+  return exampleEmbed;
+
+  // return `DATA GEMPA UPDATE HARI INI: \n\nTanggal : ${Tanggal} \nJam : ${Jam} \nKedalaman : ${Kedalaman} \nMagnitude : ${Magnitude} \nLintang : ${Lintang} \nBujur : ${Bujur} \nWilayah : ${Wilayah} \nPotensi : ${Potensi} \nDirasakan : ${Dirasakan}`;
+}
+
+async function getJoke(){
+  const {data} = await axios.get(urlJoke);
+  const {joke} = data
+
+  return joke
+}
 
 
 const client = new Discord.Client({
@@ -80,12 +84,18 @@ client.on("ready", () => {
 
 
 
-client.on("messageCreate", (message) =>{
+client.on("messageCreate", async (message) =>{
   if(message.content == ".test"){
     message.reply("Server is Up!")
   } else if (message.content == ".jadwal"){
     message.reply(`${jalanData()}`)
-  } 
+  } else if (message.content == ".yomama"){
+    message.reply(`${getJoke()}`)
+  } else if (message.content == ".gempa"){
+    message.channel.send({embeds: [await getData()] })
+  } else if (message.content == ".joke"){
+    message.reply(`${await getJoke()}`)
+  }
 })
 
 client.login(TOKEN)
