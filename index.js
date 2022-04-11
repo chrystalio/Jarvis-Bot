@@ -49,6 +49,7 @@ async function getData() {
     { name: 'Jam', value: Jam, inline: true},
     { name: 'Kedalaman', value: Kedalaman, inline: true },
     { name: 'Magnitude', value: Magnitude, inline: true },
+    { name: 'Koordinat', value: Coordinates, inline: true},
     { name: 'Lintang', value: Lintang, inline: true},
     { name: 'Bujur', value: Bujur, inline: true },
     { name: 'Wilayah', value: Wilayah, inline: true },
