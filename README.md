@@ -6,5 +6,5 @@ Jarvis bot is a simple discord bot project that soon to be my virtual assistance
 ## Features
 
 - Show Schedule
-- More features are coming soon
+- Show live update earth quake data from https://www.bmkg.go.id/
 
