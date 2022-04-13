@@ -5,10 +5,10 @@ const axios = require('axios').default;
 const m = require("moment")
 const TOKEN = process.env['token']
 const jadwalKuliah = require("./data.json")
+process.env.TZ = 'Asia/Jakarta';
 
 const day = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
-process.env.TZ = 'Asia/Jakarta';
 
 
 function jalanData(){
@@ -30,12 +30,7 @@ function jalanData(){
 
 }
 
-// const url = 'https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json'
-const urlJoke = 'https://yomomma-api.herokuapp.com/jokes'
-
-
-
-async function getData() {
+async function getGempa() {
   const {data} = await axios.get('https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json');
   const {Tanggal, Jam, Coordinates, Lintang, Bujur, Magnitude, Kedalaman, Wilayah, Potensi, Dirasakan, Shakemap } = data.Infogempa.gempa;
 
@@ -65,11 +60,18 @@ async function getData() {
 }
 
 async function getJoke(){
-  const {data} = await axios.get(urlJoke);
+  const {data} = await axios.get('https://yomomma-api.herokuapp.com/jokes');
   const {joke} = data
-
   return joke
 }
+
+async function getDuck(){
+  const {data} = await axios.get('https://random-d.uk/api/random')
+  const {url} = data
+  
+  return `${url}` 
+}
+
 
 
 const client = new Discord.Client({
@@ -93,9 +95,11 @@ client.on("messageCreate", async (message) =>{
   } else if (message.content == ".yomama"){
     message.reply(`${getJoke()}`)
   } else if (message.content == ".gempa"){
-    message.channel.send({embeds: [await getData()] })
+    message.channel.send({embeds: [await getGempa()] })
   } else if (message.content == ".joke"){
     message.reply(`${await getJoke()}`)
+  } else if (message.content == ".duck"){
+    message.reply(`${await getDuck()}`)
   }
 })
 
