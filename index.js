@@ -55,8 +55,6 @@ async function getGempa() {
 	.setTimestamp();
 
   return exampleEmbed;
-
-  // return `DATA GEMPA UPDATE HARI INI: \n\nTanggal : ${Tanggal} \nJam : ${Jam} \nKedalaman : ${Kedalaman} \nMagnitude : ${Magnitude} \nLintang : ${Lintang} \nBujur : ${Bujur} \nWilayah : ${Wilayah} \nPotensi : ${Potensi} \nDirasakan : ${Dirasakan}`;
 }
 
 async function getJoke(){
@@ -72,7 +70,11 @@ async function getDuck(){
   return `${url}` 
 }
 
-
+async function getCandaan() {
+    const { data } = await axios.get('https://candaan-api.vercel.app/api/text/random');
+  let getCandaan = data.data
+    return getCandaan;
+}
 
 const client = new Discord.Client({
   intents:[
@@ -100,6 +102,8 @@ client.on("messageCreate", async (message) =>{
     message.reply(`${await getJoke()}`)
   } else if (message.content == ".duck"){
     message.reply(`${await getDuck()}`)
+  } else if (message.content == ".lawak"){
+    message.channel.send(`${await getCandaan()}`)
   }
 })
 
